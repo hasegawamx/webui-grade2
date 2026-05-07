@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!-- ページの言語を日本語に設定 -->
+<html lang="ja">
+
+<head>
+    <!-- 文字コードの設定（日本語が文字化けしないようにする） -->
+    <meta charset="UTF-8">
+    <!-- スマホで見たときに正しい大きさで表示するための設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ブラウザのタブに表示されるタイトル -->
+    <title>Cafe OCC</title>
+    <!-- CSSファイル（見た目）を読み込む -->
+    <link rel="stylesheet" href="sample.css">
+</head>
+
+<body>
+
+    <!-- ヘッダー：ロゴ・メニュー・テーマ変更ボタン -->
+    <header>
+        <h1 class="logo">Cafe OCC</h1>
+
+        <!-- ページ内のリンク（#about を押すと about セクションへジャンプ） -->
+        <nav>
+            <a href="#about">about</a>
+            <a href="#menu">menu</a>
+            <a href="#access">access</a>
+        </nav>
+
+        <!-- 押すと配色が変わるボタン（処理は script.js の toggleTheme 関数） -->
+        <button id="themeBtn" onclick="toggleTheme()">テーマ変更</button>
+    </header>
+
+    <main>
+        <!-- ヒーロー：ページの一番上の大きなビジュアル -->
+        <section class="hero">
+            <h2>朝の光と、一杯のコーヒー。</h2>
+            <p>静かな時間をお届けする街のカフェ</p>
+        </section>
+
+        <!-- About：お店の紹介 -->
+        <section id="about">
+            <h2>About</h2>
+            <p>2026年オープン。豆の香りと木の温もりに包まれた小さな空間で、ゆったりとした時間をお過ごしいただけます。</p>
+            <p>お一人でも、ご家族でも、お気軽にどうぞ。</p>
+        </section>
+
+        <!-- Menu：メニュー一覧 + 「今日のおすすめ」ボックス -->
+        <section id="menu">
+            <h2>Menu</h2>
+
+            <!-- ボタンを押すとランダムでおすすめが表示される（処理は pickRecommend 関数） -->
+            <div class="recommend">
+                <h3>今日のおすすめは？</h3>
+                <p class="recommend-desc">気分が決まらないときは、おまかせで一品ご提案します。</p>
+                <button onclick="pickRecommend()" class="recommend-btn">☕ おすすめを見る</button>
+                <!-- 結果がここに JavaScript で書き込まれる（最初は空っぽ） -->
+                <p id="recommendResult" class="recommend-result"></p>
+            </div>
+
+            <!-- メニューカードを横並びにする箱 -->
+            <div class="menu-list">
+
+                <!-- メニュー1つ分のカード -->
+                <div class="menu-item">
+                    <!-- 画像はUnsplashの無料素材（商用OK） -->
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop&auto=format&q=80" alt="本日のコーヒー">
+                    <h3>本日のコーヒー</h3>
+                    <p class="price">¥480</p>
+                    <p>季節のシングルオリジン豆を、一杯ずつ丁寧にハンドドリップ。</p>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1512568400610-62da28bc8a13?w=600&h=400&fit=crop&auto=format&q=80" alt="カフェラテ">
+                    <h3>カフェラテ</h3>
+                    <p class="price">¥520</p>
+                    <p>ふわふわのスチームミルクと深煎りエスプレッソのバランス。</p>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1702925614886-50ad13c88d3f?w=600&h=400&fit=crop&auto=format&q=80" alt="チーズケーキ">
+                    <h3>チーズケーキ</h3>
+                    <p class="price">¥580</p>
+                    <p>濃厚レアチーズケーキ。自家製ベリーソース添え。</p>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=600&h=400&fit=crop&auto=format&q=80" alt="カプチーノ">
+                    <h3>カプチーノ</h3>
+                    <p class="price">¥500</p>
+                    <p>きめ細かなフォームミルクと、香り高いエスプレッソの黄金比。</p>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1545665225-b23b99e4d45e?w=600&h=400&fit=crop&auto=format&q=80" alt="抹茶ラテ">
+                    <h3>抹茶ラテ</h3>
+                    <p class="price">¥560</p>
+                    <p>京都産の宇治抹茶を使用。やさしい甘みと深い香りが広がる一杯。</p>
+                </div>
+
+                <div class="menu-item">
+                    <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&h=400&fit=crop&auto=format&q=80" alt="スコーン">
+                    <h3>プレーンスコーン</h3>
+                    <p class="price">¥380</p>
+                    <p>外はサクッ、中はしっとり。クロテッドクリームとジャム添え。</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- 席のご予約フォーム -->
+        <section>
+            <div class="reserve">
+                <h3>席のご予約</h3>
+                <p class="reserve-desc">お席をお取りしてお待ちしております。</p>
+
+                <div class="reserve-form">
+                    <!-- 名前の入力欄 -->
+                    <div class="form-row">
+                        <label for="guestName">お名前</label>
+                        <input type="text" id="guestName" placeholder="例:OCC 太郎">
+                    </div>
+
+                    <!-- 人数の入力欄（1〜10人まで） -->
+                    <div class="form-row">
+                        <label for="guestCount">人数</label>
+                        <input type="number" id="guestCount" placeholder="1" min="1" max="10">
+                    </div>
+
+                    <!-- 押すと reserve 関数が動いて結果が表示される -->
+                    <button onclick="reserve()" class="reserve-btn">予約する</button>
+                </div>
+
+                <!-- 予約結果がここに JavaScript で書き込まれる -->
+                <p id="reserveResult" class="reserve-result"></p>
+            </div>
+        </section>
+
+        <!-- Access：営業時間・住所・電話 -->
+        <section id="access">
+            <h2>Access</h2>
+            <p>営業時間:8:00 - 20:00（火曜定休）</p>
+            <p>住所:〇〇市〇〇町1-2-3 カフェOCCビル 2F</p>
+            <p>電話:000-1234-5678</p>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2026 Cafe OCC</p>
+    </footer>
+
+    <!-- JavaScript（動きの処理）を読み込む。body の最後に書くのがオススメ -->
+    <script src="sample.js"></script>
+</body>
+
+</html>

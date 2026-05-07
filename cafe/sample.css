@@ -1,0 +1,315 @@
+/* ============================================
+   1. リセット
+   ブラウザごとの差をなくすため、最初に余白などをそろえる
+   ============================================ */
+
+/* すべての要素の余白とサイズ計算をリセット */
+* {
+  margin: 0;              /* 外側の余白をゼロに */
+  padding: 0;             /* 内側の余白をゼロに */
+  box-sizing: border-box; /* 幅に padding と border を含めて計算する方式 */
+}
+
+
+/* ============================================
+   2. テーマカラー（CSS変数）
+   ここを書き換えれば、ページ全体の色が一気に変わる
+   JavaScript からも書き換え可能（テーマ変更ボタン）
+   ============================================ */
+
+/* ページ全体で使う色を「変数」として定義する場所 */
+:root {
+  --main-color:   #78350F; /* メインの色（濃い茶色） */
+  --accent-color: #F59E0B; /* アクセントの色（オレンジ） */
+  --bg-color:     #FFFBEB; /* ページ全体の背景色（クリーム色） */
+  --text-color:   #1F2937; /* 文字色（濃いグレー） */
+  --card-color:   #FFFFFF; /* カードやヘッダーの白 */
+  --muted-color:  #6B7280; /* 説明文や枠線の控えめなグレー */
+}
+
+
+/* ============================================
+   3. 全体のベーススタイル
+   ============================================ */
+
+/* ページ全体のフォント・背景色・文字色など、土台になる設定 */
+body {
+  font-family: "Helvetica Neue", "Hiragino Sans", "Yu Gothic", sans-serif; /* 使うフォント（前から順に試される） */
+  background-color: var(--bg-color); /* ページの背景色 */
+  color: var(--text-color);          /* 基本の文字色 */
+  line-height: 1.7;                  /* 行と行の高さ（読みやすさのため広めに） */
+}
+
+/* 見出し（h1, h2, h3）はすべてメインカラー、下に少しスキマ */
+h1, h2, h3 {
+  color: var(--main-color); /* 見出しの文字色 */
+  margin-bottom: 16px;      /* 見出しの下に空ける余白 */
+}
+
+/* ボタン共通スタイル（すべての <button> に自動で適用される） */
+button {
+  background-color: var(--main-color); /* 背景色（メインカラー） */
+  color: var(--card-color);            /* 文字色（白） */
+  border: none;                        /* 枠線をなしに */
+  padding: 12px 24px;                  /* 内側の余白（上下12px / 左右24px） */
+  border-radius: 8px;                  /* 角を丸く */
+  font-weight: bold;                   /* 文字を太く */
+  cursor: pointer;                     /* マウスを乗せると指のアイコンに */
+}
+
+/* ボタンにマウスを乗せたとき：少し薄くしてフィードバック */
+button:hover {
+  opacity: 0.85; /* 透明度85%（少しだけ薄く） */
+}
+
+/* 各セクション共通の余白と最大幅（中央寄せ） */
+section {
+  padding: 60px 24px; /* 内側の余白（上下60px / 左右24px） */
+  max-width: 960px;   /* 最大幅（広い画面でも広がりすぎない） */
+  margin: 0 auto;     /* 上下0・左右auto で中央寄せ */
+}
+
+/* セクションの大見出し（About / Menu / Access） */
+section h2 {
+  font-size: 28px;                              /* 文字サイズ */
+  border-bottom: 3px solid var(--accent-color); /* 下線（実線3px、アクセント色） */
+  padding-bottom: 8px;                          /* 文字と下線の間のスキマ */
+  margin-bottom: 24px;                          /* 見出しの下を広めに空ける */
+}
+
+/* ============================================
+   4. ヘッダー（ロゴ・ナビ・ボタンを横並び）
+   ============================================ */
+
+/* ページ上部の白い帯。スクロールしても画面上に張り付く */
+header {
+  background-color: var(--card-color); /* 背景色（白） */
+  padding: 16px 40px;                  /* 内側の余白 */
+  display: flex;                       /* Flexboxで子要素を横並びに */
+  justify-content: space-between;      /* 子要素を両端に寄せる */
+  align-items: center;                 /* 子要素を縦方向の中央に */
+  position: sticky;                    /* スクロールしても画面上に張り付く */
+  top: 0;                              /* 張り付く位置（画面の一番上） */
+}
+
+/* ナビゲーション：リンクを横並びに */
+nav {
+  display: flex; /* Flexboxで横並びに */
+  gap: 24px;     /* リンクとリンクの間隔 */
+}
+
+/* ナビゲーションのリンク */
+nav a {
+  color: var(--main-color); /* 文字色 */
+  text-decoration: none;    /* リンクのデフォルトの下線を消す */
+  font-weight: bold;        /* 太字に */
+}
+
+/* ナビリンクにマウスを乗せたとき */
+nav a:hover {
+  color: var(--accent-color); /* 文字色をアクセントカラーに変える */
+}
+
+/* テーマ変更ボタン：共通の button スタイルを「枠線だけ」のスタイルに上書き */
+#themeBtn {
+  background-color: transparent;       /* 背景を透明に上書き */
+  color: var(--main-color);            /* 文字色をメインカラーに上書き */
+  border: 2px solid var(--main-color); /* 枠線を追加 */
+  padding: 6px 14px;                   /* 共通ボタンより小さめの余白 */
+  border-radius: 999px;                /* 大きい値で角を完全に丸く */
+}
+
+
+/* ============================================
+   5. ヒーローセクション（ページ最上部の大きな見せ場）
+   ============================================ */
+
+/* 背景に写真 + 黒い半透明レイヤーを重ねた、目を引くエリア */
+.hero {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), /* 黒い半透明（文字を読みやすく） */
+    url("https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=1600&h=900&fit=crop&auto=format&q=80"); /* 背景写真 */
+  background-size: cover;               /* 画像を枠いっぱいに広げる */
+  background-position: center;          /* 画像の中央を基準に表示 */
+  background-color: var(--main-color);  /* 画像が読み込めなかったときの色 */
+  color: var(--card-color);             /* 文字色を白に */
+  padding: 140px 24px;                  /* 内側に大きな余白で高さを出す */
+  text-align: center;                   /* テキストを中央揃え */
+  max-width: none;                      /* section の max-width を上書きして全幅に */
+}
+
+/* ヒーロー内の大見出し（白文字 + 大きめサイズ） */
+.hero h2 {
+  color: var(--card-color); /* 文字色を白に上書き */
+  border: none;             /* section h2 の下線を消す */
+  font-size: 36px;          /* ヒーロー専用の大きいサイズ */
+}
+
+
+/* ============================================
+   6. メニュー（カードを Flexbox で横並び）
+   ============================================ */
+
+/* メニューカードを横並びにする箱 */
+.menu-list {
+  display: flex;     /* Flexboxで横並びに */
+  gap: 24px;         /* カード同士の間隔 */
+  flex-wrap: wrap;   /* 入りきらないときは折り返す */
+}
+
+/* メニュー1つ分のカード（白背景・角丸） */
+.menu-item {
+  flex: 1;                             /* 余ったスペースを兄弟と等分する */
+  min-width: 240px;                    /* これより小さくはならない */
+  background-color: var(--card-color); /* 背景色（白） */
+  padding: 24px;                       /* 内側の余白 */
+  border-radius: 8px;                  /* 角丸 */
+  overflow: hidden;                    /* はみ出した中身（画像）を切り取る */
+}
+
+/* メニュー画像：カードの上端にぴったり貼り付ける */
+.menu-item img {
+  display: block;             /* 画像下の余分な隙間を消す */
+  width: calc(100% + 48px);   /* padding 24px×2 を打ち消してカード幅いっぱいに */
+  margin: -24px -24px 16px;   /* padding を相殺してカード上端に密着・下は16px */
+  height: 180px;              /* 高さを固定 */
+  object-fit: cover;          /* 縦横比を保ったまま枠に合わせて切り抜く */
+}
+
+/* 値段（オレンジで太字、少し大きめ） */
+.price {
+  color: var(--accent-color); /* アクセントカラー */
+  font-weight: bold;          /* 太字 */
+  font-size: 20px;            /* 少し大きめ */
+}
+
+
+/* ============================================
+   7. 今日のおすすめボックス
+   ============================================ */
+
+/* 点線の枠で囲んだ目立つエリア */
+.recommend {
+  margin: 40px 0;                         /* 上下に広めの余白 */
+  padding: 24px;                          /* 内側の余白 */
+  background-color: var(--card-color);    /* 背景色（白） */
+  border: 2px dashed var(--accent-color); /* 点線の枠（dashed=点線） */
+  border-radius: 12px;                    /* 角丸 */
+  text-align: center;                     /* 中の文字を中央揃え */
+}
+
+/* おすすめの説明文（控えめなグレー） */
+.recommend-desc {
+  color: var(--muted-color); /* 控えめなグレーの文字色 */
+  margin-bottom: 16px;       /* 下に余白 */
+}
+
+/* 抽選で表示されるおすすめメニュー名 */
+.recommend-result {
+  margin-top: 16px;           /* 上に余白 */
+  font-size: 24px;            /* 大きめ */
+  font-weight: bold;          /* 太字 */
+  color: var(--accent-color); /* アクセントカラー */
+}
+
+
+/* ============================================
+   8. 席予約フォーム
+   ============================================ */
+
+/* 予約フォームを囲む白いカード */
+.reserve {
+  padding: 24px;                       /* 内側の余白 */
+  background-color: var(--card-color); /* 背景色（白） */
+  border-radius: 12px;                 /* 角丸 */
+  max-width: 560px;                    /* フォームは広すぎないように */
+  margin: 0 auto;                      /* 上下0・左右auto で中央寄せ */
+}
+
+/* 予約フォームの説明文 */
+.reserve-desc {
+  color: var(--muted-color); /* 控えめなグレー */
+  margin-bottom: 16px;       /* 下に余白 */
+}
+
+/* フォーム全体：入力欄を縦に並べる */
+.reserve-form {
+  display: flex;          /* Flexboxを使う */
+  flex-direction: column; /* 縦方向に並べる */
+  gap: 16px;              /* 行と行の間隔 */
+}
+
+/* ラベル + 入力欄を1セットにする箱 */
+.form-row {
+  display: flex;          /* Flexboxを使う */
+  flex-direction: column; /* ラベル → 入力欄の順に縦並び */
+  gap: 6px;               /* ラベルと入力欄の間隔 */
+}
+
+/* 入力欄の上に表示するラベル */
+.form-row label {
+  font-weight: bold;        /* 太字 */
+  color: var(--main-color); /* メインカラー */
+}
+
+/* テキストや数字を入力する欄 */
+.form-row input {
+  padding: 12px;                          /* 入力欄の内側の余白 */
+  border: 1.5px solid var(--muted-color); /* 細いグレーの枠線 */
+  border-radius: 8px;                     /* 角丸 */
+  font-family: inherit;                   /* 親（body）のフォントをそのまま使う */
+  font-size: 16px;                        /* スマホで自動ズームされないように16px以上 */
+}
+
+/* 入力欄を選んだとき：枠だけアクセント色に変える */
+.form-row input:focus {
+  outline: none;                /* デフォルトの青い枠を消す */
+  border-color: var(--accent-color); /* 枠線の色をアクセントに変える */
+}
+
+/* 予約結果のメッセージ表示エリア */
+.reserve-result {
+  margin-top: 16px;         /* 上に余白 */
+  color: var(--main-color); /* メインカラー */
+  font-weight: bold;        /* 太字 */
+}
+
+
+/* ============================================
+   9. フッター
+   ============================================ */
+
+/* ページ最下部の濃色の帯 */
+footer {
+  background-color: var(--main-color); /* 背景色（濃い茶色） */
+  color: var(--card-color);            /* 文字色（白） */
+  text-align: center;                  /* テキストを中央揃え */
+  padding: 24px;                       /* 内側の余白 */
+  margin-top: 60px;                    /* 上のセクションとの余白 */
+}
+
+
+/* ============================================
+   10. レスポンシブ対応（スマホサイズ）
+   画面幅が 768px 以下のときだけ、中のスタイルが適用される
+   ============================================ */
+@media (max-width: 768px) {
+
+  /* スマホではヘッダーを縦並びに */
+  header {
+    flex-direction: column; /* 横並び→縦並びに変更 */
+    gap: 12px;              /* 子要素の間隔 */
+    padding: 12px 20px;     /* 余白を小さめに */
+  }
+
+  /* スマホではナビのリンク間隔を狭く */
+  nav {
+    gap: 12px; /* リンク間隔を狭く */
+  }
+
+  /* スマホではメニューカードを縦に1列で並べる */
+  .menu-item {
+    flex: 1 1 100%; /* 親いっぱい（100%）に広がる */
+    min-width: 0;   /* 最小幅の制限を解除 */
+  }
+}
